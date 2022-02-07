@@ -1,16 +1,18 @@
-@extends('layout2')
+@extends('layout')
 
 @section('title')
     Criar Produto | Guitar Store
 @endsection
 
-@section('cabecalho')
-    Adicionar Produto
-@endsection
-
 @section('conteudo')
 
-<div class="container">
+{{-- h1 da Página --}}
+
+<div class="jumbotron mb-4 bg col-md-4 offset-md-3">
+    <h1>Adicionar Produto</h1>
+</div>
+
+<div class="col-md-6 offset-md-3">
     <form action="/produtos/criar" method="post" enctype="multipart/form-data">
         @csrf
         <div class="form-group">

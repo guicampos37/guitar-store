@@ -17,4 +17,9 @@ class Produto extends Model
             'categoria_id'
         );
     }
+
+    public function comentarios()
+    {
+        return $this->hasMany(Comentario::class);
+    }
 }

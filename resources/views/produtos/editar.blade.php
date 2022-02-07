@@ -1,39 +1,47 @@
-@extends('layout2')
+@extends('layout')
 
 @section('title')
     Editar Produto | Guitar Store
 @endsection
 
-@section('cabecalho')
-    Editar Produto
-@endsection
-
 @section('conteudo')
+{{-- h1 da Página --}}
 
-<div class="container">
-    <form action="/produtos/{{ $produto->id }}/editar" method="post" enctype="multipart/form-data">
-        @csrf
-        <div class="form-group">
-            <label for="nome">Nome</label>
-            <input type="text" name="nome" class="form-control"- id="nome" value="{{ $produto->nome }}">
-        </div>
+<div class="jumbotron mb-4 bg col-md-4 offset-md-3">
+    <h1>Editar Produto</h1>
+</div>
 
-        <div class="form-group">
-            <label for="valor">Valor</label>
-            <input type="text" name="valor" class="form-control" id="valor" value="{{ $produto->valor }}">
-        </div>
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <form action="/produtos/{{ $produto->id }}/editar" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" name="nome" class="form-control"- id="nome" value="{{ $produto->nome }}">
+            </div>
 
-        {{-- <div class="form-check form-control-lg form-check-inline mb-4 mt-3 custom-checkbox">
-            <input class="form-check-input" type="checkbox" value="" id="">
-            <label class="form-check-label" for="">Categoria 1</label>
-        </div> --}}
+            <div class="form-group">
+                <label for="valor">Valor</label>
+                <input type="text" name="valor" class="form-control" id="valor" value="{{ $produto->valor }}">
+            </div>
 
-        <div class="form-group mb-4">
-            <label for="imagem">Selecione uma imagem do seu produto</label>
-            <input type="file" name="imagem" class="form-control-file" id="imagem" value="{{ $produto->imagem }}">
-        </div>
+            @foreach($categorias as $categoria)
+                <div class="form-check form-control-lg form-check-inline mb-4 mt-3 custom-checkbox">
+                    <input class="form-check-input" name="categoria[]" type="checkbox" value="{{ $categoria->id }}" id=""
+                    @if(in_array($categoria->id, $produtoCategorias))
+                        {{ 'checked' }}
+                    @endif>
+                    <label class="form-check-label" for="">{{ strToUpper($categoria->nome) }}</label>
+                </div>
+            @endforeach
 
-        <button type="submit" class="btn btn-danger">Enviar</button>
-    </form>
+            <div class="form-group mb-4">
+                <label for="imagem">Selecione uma imagem do seu produto</label>
+                <input type="file" name="imagem" class="form-control-file" id="imagem" value="{{ $produto->imagem }}">
+            </div>
+
+            <button type="submit" class="btn btn-danger">Enviar</button>
+        </form>
+    </div>
 </div>
 @endsection

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Produto;
 use App\Categoria;
 use Illuminate\Http\Request;
-// use Illuminate\Database\Eloquent\Collection;
 
 class ProdutosController extends Controller
 {
@@ -18,6 +17,13 @@ class ProdutosController extends Controller
         }
 
         return view('produtos.index', compact('produtos'));
+    }
+
+    public function show($id)
+    {
+        $produto = Produto::find($id);
+
+        return view('produtos.show', compact('produto'));
     }
 
     public function create()
@@ -56,8 +62,11 @@ class ProdutosController extends Controller
     public function editar($id)
     {
         $produto = Produto::find($id);
+        $categorias = Categoria::all();
 
-        return view('produtos.editar', compact('produto'));
+        $produtoCategorias = $produto->categorias->pluck('id')->toArray();
+
+        return view('produtos.editar', compact('produto', 'categorias', 'produtoCategorias'));
     }
 
     public function editarProduto($id, Request $request)
@@ -80,7 +89,12 @@ class ProdutosController extends Controller
             $produto->imagem = $nomeImagem;
         }
 
+        $produto->categorias()->detach();
+
         $produto->save();
+        $categorias = $request->categoria;
+        $produto = Produto::find($produto->id);
+        $produto->categorias()->sync($categorias);
 
         return redirect('/produtos');
     }
